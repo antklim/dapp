@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'login.dart';
+import 'logout.dart';
 import 'services/auth.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,52 +22,24 @@ class _SplashScreenState extends State<SplashScreen> {
           debugPrint('Snapshot has data: ${snapshot.hasData}');
           debugPrint('Snapshot: ${snapshot.data}');
 
-          List<Widget> children;
-
           if (snapshot.hasData) {
-            if (snapshot.data!) {              
-              children = <Widget>[
-                const Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.green,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Result: ${snapshot.data} - navigate to home page'),
-                ),
-              ];
-            } else {
-              children = <Widget>[
-                const Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Result: ${snapshot.data} - navigate to login'),
-                ),
-              ];
-            }
-          } else {
-            children = const <Widget>[
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              ),
-            ];
+            return snapshot.data! ? const LogoutPage() : const LoginPage();
           }
 
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
+              children: const <Widget>[
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                ),
+              ],
             ),
           );
         },

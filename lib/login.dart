@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:magic_sdk/magic_sdk.dart';
+import 'package:provider/provider.dart';
 
 import 'logout.dart';
+import 'services/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,8 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       debugPrint('Email: $email');
 
-      var token = await magic.auth.loginWithEmailOTP(email: email);
-      // var token = await magic.auth.loginWithMagicLink(email: email);
+      var token = await Provider.of<AuthService>(context, listen: false).login(email: email);
 
       debugPrint('Token: $token');
 
@@ -72,13 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          final messenger = ScaffoldMessenger.of(context);
-
                           await login(email: _emailController.text);
-
-                          messenger.showSnackBar(
-                            const SnackBar(content: Text('Check your email')),
-                          );
                         }
                       },
                       child: const Text('Login'),

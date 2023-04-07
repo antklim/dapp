@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:magic_sdk/magic_sdk.dart';
+import 'package:provider/provider.dart';
+
+import 'services/auth.dart';
 
 class LogoutPage extends StatefulWidget {
   const LogoutPage({super.key});
@@ -13,7 +16,7 @@ class _LogoutPageState extends State<LogoutPage> {
 
   Future logout() async {
     try {
-      await magic.user.logout();
+      await Provider.of<AuthService>(context, listen: false).logout();
 
       if (!mounted) return;
 
@@ -25,11 +28,9 @@ class _LogoutPageState extends State<LogoutPage> {
 
   Future getUserInfo() async {
     try {
-      var userInfo = await magic.user.getMetadata();
-      var isLoggedIn = await magic.user.isLoggedIn();
+      var userInfo = await Provider.of<AuthService>(context, listen: false).getUser();
 
-      debugPrint('User Info: ${userInfo.toJson()}');
-      debugPrint('User logged in: $isLoggedIn');
+      debugPrint('User Info: $userInfo');
     } catch (e) {
       debugPrint('Error: $e');
     }
