@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:magic_sdk/magic_sdk.dart';
 
 class User {
@@ -12,31 +13,50 @@ class User {
   });
 }
 
-class AuthService {
+class AuthService extends ChangeNotifier {
   final magic = Magic.instance;
   
   User? user;
 
+  Future<User> _getUser() async {
+    var magicUser = await magic.user.getMetadata();
+
+    return User(
+      email: magicUser.email!,
+      issuer: magicUser.issuer!,
+      publicAddress: magicUser.publicAddress!,
+    );
+  }
+
   Future<User?> getUser() async {
     if (await isLoggedIn()) {
-      var magicUser = await magic.user.getMetadata();
-
-      user = User(
-        email: magicUser.email!,
-        issuer: magicUser.issuer!,
-        publicAddress: magicUser.publicAddress!,
-      );
+      user = await _getUser();
     } else {
       user = null;
     }
+
+    notifyListeners();
 
     return user;
   }
 
   Future<bool> isLoggedIn() => magic.user.isLoggedIn();
 
-  Future<String> login({required String email}) => 
-    magic.auth.loginWithEmailOTP(email: email);
+  Future<String> login({required String email}) async {
+    var token = await magic.auth.loginWithEmailOTP(email: email);
 
-  Future<bool> logout() => magic.user.logout();
+    user = await _getUser();
+
+    notifyListeners();
+
+    return token;
+  }
+
+  Future<void> logout() async {
+    await magic.user.logout();
+
+    user = null;
+
+    notifyListeners();
+  }
 }

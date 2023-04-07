@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'services/auth.dart';
 
@@ -10,13 +11,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final authService = AuthService();
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<bool>(
-        future: authService.isLoggedIn(),
+        future: Provider.of<AuthService>(context).isLoggedIn(),
         builder: (context, snapshot) {
           debugPrint('Snapshot has data: ${snapshot.hasData}');
           debugPrint('Snapshot: ${snapshot.data}');
