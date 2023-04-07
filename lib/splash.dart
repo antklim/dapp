@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:magic_sdk/magic_sdk.dart';
+
+import 'services/auth.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,13 +10,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final magic = Magic.instance;
+  final authService = AuthService();
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<bool>(
-        future: magic.user.isLoggedIn(),
+        future: authService.isLoggedIn(),
         builder: (context, snapshot) {
           debugPrint('Snapshot has data: ${snapshot.hasData}');
           debugPrint('Snapshot: ${snapshot.data}');
