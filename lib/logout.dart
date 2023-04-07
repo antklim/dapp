@@ -23,6 +23,18 @@ class _LogoutPageState extends State<LogoutPage> {
     }
   }
 
+  Future getUserInfo() async {
+    try {
+      var userInfo = await magic.user.getMetadata();
+      var isLoggedIn = await magic.user.isLoggedIn();
+
+      debugPrint('User Info: ${userInfo.toJson()}');
+      debugPrint('User logged in: $isLoggedIn');
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +49,10 @@ class _LogoutPageState extends State<LogoutPage> {
             ElevatedButton(
               onPressed: logout,
               child: const Text('Logout'),
+            ),
+            ElevatedButton(
+              onPressed: getUserInfo,
+              child: const Text('Get user info'),
             ),
           ],
         ),

@@ -1,12 +1,13 @@
+import 'package:dapp/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:magic_sdk/magic_sdk.dart';
 
 import 'login.dart';
 
 void main() {
-  runApp(const MyApp());
+  Magic.instance = Magic("API_KEY");
 
-  Magic.instance = Magic("YOUR_PUBLISHABLE_KEY");
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           MaterialApp(
             title: 'Flutter Magic',
             theme: ThemeData(primarySwatch: Colors.green),
-            home: const HomePage(),
+            home: const SplashScreen(),
           ),
           Magic.instance.relayer,
         ],
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(

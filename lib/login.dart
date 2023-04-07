@@ -18,8 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   Future login({required String email}) async {
     try {
       debugPrint('Email: $email');
-      // var token = await magic.auth.loginWithEmailOTP(email: email);
-      var token = await magic.auth.loginWithMagicLink(email: email);
+
+      var token = await magic.auth.loginWithEmailOTP(email: email);
+      // var token = await magic.auth.loginWithMagicLink(email: email);
+
       debugPrint('Token: $token');
 
       if (!mounted) return;
